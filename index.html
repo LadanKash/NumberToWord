@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Final Project</title>
+    <style>
+        body {
+            margin-top: 160px;
+            text-align: center;
+            font-family: sans-serif;
+            background-color: #7091F5;
+        }
+
+        input {
+            padding: 8px;
+            width: 20%;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+        }
+
+        button:hover {
+            background-color: lightgray;
+            color: #333;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Programming a number to text converter.</h1>
+<h2>Enter Number</h2>
+<input type="text" id="numberInput" placeholder="Enter a number">
+<button onclick="displayConvertNumber()">Display Convert Number</button>
+<p id="displayNumber"></p>
+
+<script>
+
+    function converter(number) {
+        if (isNaN(number) || number < 0 || number > 999) {
+            return "Please choose a number between 0 and 999.";
+        }
+
+        // Declaring the arrays
+
+        let unitsTxt = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+
+        let tensTxt = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+        
+        let hundredsTxt = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+
+
+        // Extracting hundreds, tens and units
+
+        let units = number % 10;
+        let tens = (number % 100 - units) / 10;
+        let hundreds = (number % 1000 - number % 100) / 100;
+        let unitsOut, tensOut, hundredsOut;
+
+        // Creating an exception for zero and the units output
+
+        if (number === 0) {
+            return "zero";
+        } else {
+            unitsOut = unitsTxt[units];
+        }
+
+        // Creating the hundreds output
+
+        if (hundreds >= 1) {
+            hundredsOut = hundredsTxt[hundreds] + " hundred ";
+        } else {
+            hundredsOut = "";
+        }
+
+        // Creating the units and tens ending with the suffix « teen »
+
+        if (tens === 1 && units >= 0) {
+            tensOut = tensTxt[0];
+            unitsOut = unitsTxt[10 + units];
+        } else if (1 <= units && units <= 9) {
+            tensOut = tensTxt[0];
+            unitsOut = unitsTxt[units];
+        }
+
+        // Creating the tens (2 and over)
+        
+        if (tens > 1 && units === 0) {
+            tensOut = tensTxt[tens];
+            unitsOut = unitsTxt[units];
+        } else if (tens > 1) {
+            tensOut = tensTxt[tens] + "-";
+            unitsOut = unitsTxt[units];
+        }
+
+        // Returning the string
+
+        return hundredsOut + tensOut + unitsOut;
+    }
+
+    function displayConvertNumber() {
+        const numberInput = document.getElementById("numberInput");
+        const displayNumber = document.getElementById("displayNumber");
+        const userInput = parseInt(numberInput.value, 10);
+
+        const result = converter(userInput);
+        displayNumber.textContent = result;
+    }
+</script>
+</body>
+</html>
+
+
